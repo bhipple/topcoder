@@ -31,7 +31,6 @@ public class TeamContestEasy
 	
 		return rank;
 	}
-	
 	<%:testing-code%>
 }
 //Powered by [KawigiEdit] 2.0!
