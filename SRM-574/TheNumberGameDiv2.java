@@ -6,7 +6,7 @@ import java.awt.geom.*;
 
 public class TheNumberGameDiv2
 {
-  public int minimumMoves(int A, int B)
+	public int minimumMoves(int A, int B)
 	{
 		Integer t1 = new Integer(A);
 		Integer t2 = new Integer(B);
@@ -36,8 +36,11 @@ public class TheNumberGameDiv2
 			}
 			else
 				return x.length() - y.length();
-
+		}
+		else if(x.contains(yR)) {
+			return x.length() - y.length() + 1;
 		} else 
 			return -1;	
+	
 	}
 }
