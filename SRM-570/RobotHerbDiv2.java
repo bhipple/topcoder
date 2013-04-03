@@ -10,32 +10,16 @@ public class RobotHerbDiv2
 	{
 		int posX = 0;
 		int posY = 0;
-		int[] dir = {0, 1};
+		int[] dx = {0, 1, 0, -1};
+		int[] dy = {1, 0, -1, 0};
+		int dir = 0;
 		
-		for(int k=0; k<T; k++) {
-			
+		for(int k=0; k<T; k++) {	
 			for(int i=0; i<a.length; i++) {
-				posX = posX + dir[0] * a[i];
-				posY = posY + dir[1] * a[i];
+				posX += dx[dir] * a[i];
+				posY += dy[dir] * a[i];
 				
-				for(int j=0; j<(a[i] % 4); j++) {
-					if(dir[0] == 0 && dir[1] == 1) {
-						dir[0] = 1;
-						dir[1] = 0;
-					}
-					else if(dir[0] == 1 && dir[1] == 0) {
-						dir[0] = 0;
-						dir[1] = -1;
-					}
-					else if(dir[0] == 0 && dir[1] == -1) {
-						dir[0] = -1;
-						dir[1] = 0;
-					}
-					else if(dir[0] == -1 && dir[1] == 0) {
-						dir[0] = 0;
-						dir[1] = 1;
-					}
-				}
+				dir = (dir + a[i]) % 4;
 			}
 		}
 		return Math.abs(posX) + Math.abs(posY);
