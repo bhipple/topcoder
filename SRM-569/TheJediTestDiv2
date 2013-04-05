@@ -8,7 +8,6 @@ public class TheJediTestDiv2
 {
  public int countSupervisors(int[] students, int Y, int J)
  {
-  Arrays.sort(students);
   int jedis = 0;
   int yodaSaves = 0;
   int jedisWithYoda, jedisWithoutYoda;
