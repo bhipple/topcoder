@@ -8,7 +8,7 @@ public class TheNumberGameDivTwo
 {
   public String find(int n)
 	{
-		boolean[] a = new boolean[1001];
+		boolean[] a = new boolean[n+1];
 		
 		for(int i=1; i<=n; i++) {
 			a[i] = false;
@@ -20,9 +20,6 @@ public class TheNumberGameDivTwo
 			}
 		}
 		
-		if(a[n])
-			return "John";
-		else
-			return "Brus";
+		run a[n] ? "John" : "Brus";
 	}
 }
