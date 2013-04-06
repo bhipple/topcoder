@@ -20,6 +20,6 @@ public class TheNumberGameDivTwo
 			}
 		}
 		
-		run a[n] ? "John" : "Brus";
+		ruturn a[n] ? "John" : "Brus";
 	}
 }
