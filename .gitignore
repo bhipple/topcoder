@@ -13,4 +13,5 @@
 Makefile
 *.java
 driver*
+*.jar
 *.swp
