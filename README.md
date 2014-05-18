@@ -7,4 +7,4 @@ I'm using this to keep track of which problems I've done; it's not intended to b
 
 
 
-All problems are the property of Topcoder Inc.
+All problems are the property of Topcoder Inc  `http://www.topcoder.com`

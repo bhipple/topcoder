@@ -15,3 +15,5 @@ Makefile
 driver*
 *.jar
 *.swp
+*.txt
+*.html
