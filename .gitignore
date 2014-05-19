@@ -1,3 +1,4 @@
+# vimcoder working directories
 0*
 1*
 2*
@@ -9,11 +10,15 @@
 8*
 9*
 
-
+# vimcoder files
 Makefile
 *.java
 driver*
-*.jar
-*.swp
 *.txt
 *.html
+*.swp
+
+# Topcoder applet
+*.jar
+*.conf*
+*.jnlp

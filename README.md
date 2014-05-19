@@ -5,4 +5,4 @@ My personal Topcoder SRM work, kept for my own reference and convenient online s
 I'm using this to keep track of which problems I've done; it's not intended to be useful to anyone.
 
 ---
-All problems are the property of [Topcoder](http://www.topcoder.com)
+All problems are the property of [topcoder](http://www.topcoder.com)
