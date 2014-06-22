@@ -18,6 +18,5 @@ driver*
 *.html
 *.swp
 
-# Topcoder applet
-*.conf*
-*.jnlp
+# Garbage
+nohup.out
