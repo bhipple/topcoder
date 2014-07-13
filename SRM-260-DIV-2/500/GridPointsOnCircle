@@ -1,3 +1,4 @@
+
 // {{{ $VIMCODER$ <-----------------------------------------------------
 // vim:filetype=cpp:foldmethod=marker:foldmarker={{{,}}}
 
@@ -31,15 +32,13 @@ class GridPointsOnCircle
 public:
     int countPoints(int rSquare)
     {
-        int x = 1, y = 0, pts = 0;
+        int x = 1, pts = 0;
 
-        while(x * x <= rSquare) {
-            y = 0;
-            while(y * y <= rSquare) {
-                if(x * x + y * y == rSquare)
-                    ++pts;
-
-                ++y;
+        double r = sqrt(rSquare);
+        while(x <= r + 1) {
+            double y = sqrt(rSquare - x * x);
+            if(y == (int) y) {
+                ++pts;
             }
             ++x;
         }
@@ -48,6 +47,3 @@ public:
     }
 };
 
-
-// Edited by VimCoder 0.3.5
-// http://github.com/chazmcgarvey/vimcoder
