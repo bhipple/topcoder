@@ -1,7 +1,6 @@
 # vimcoder files
 Makefile
 *.java
-*.cc
 driver*
 *.swp
 
