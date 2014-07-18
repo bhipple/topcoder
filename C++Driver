@@ -17,191 +17,230 @@ static double __time = 0.0;
 
 static void __timer_start()
 {
-	struct timeval tv;
-	if (gettimeofday(&tv, NULL) == 0)
-	{
-		__time = double(tv.tv_sec) * 1000.0 + double(tv.tv_usec) * 0.001;
-	}
+    struct timeval tv;
+    if (gettimeofday(&tv, NULL) == 0)
+    {
+        __time = double(tv.tv_sec) * 1000.0 + double(tv.tv_usec) * 0.001;
+    }
 }
 
 static double __timer_stop()
 {
-	double start = __time;
-	__timer_start();
-	return __time - start;
+    double start = __time;
+    __timer_start();
+    return __time - start;
 }
 
 
 static void __eat_whitespace(std::istream& in)
 {
-	while (in.good() && std::isspace(in.peek())) in.get();
+    while (in.good() && std::isspace(in.peek())) in.get();
 }
 
 
 std::ostream& operator << (std::ostream& out, const std::string& str)
 {
-	out << '"' << str.c_str() << '"';
-	return out;
+    out << '"' << str.c_str() << '"';
+    return out;
 }
 
 template <class T>
 std::ostream& operator << (std::ostream& out, const std::vector<T>& vec)
 {
-	out << '{';
-	if (0 < vec.size())
-	{
-		out << vec[0];
-		for (size_t i = 1; i < vec.size(); ++i) out << ", " << vec[i];
-	}
-	out << '}';
-	return out;
+    out << '{';
+    if (0 < vec.size())
+    {
+        out << vec[0];
+        for (size_t i = 1; i < vec.size(); ++i) out << ", " << vec[i];
+    }
+    out << '}';
+    return out;
 }
 
 std::istream& operator >> (std::istream& in, std::string& str)
 {
-	__eat_whitespace(in);
+    __eat_whitespace(in);
 
-	int c;
-	if (in.good() && (c = in.get()) == '"')
-	{
-		std::ostringstream s;
-		while (in.good() && (c = in.get()) != '"')
-		{
-			s.put(char(c));
-		}
-		str = s.str();
-	}
+    int c;
+    if (in.good() && (c = in.get()) == '"')
+    {
+        std::ostringstream s;
+        while (in.good() && (c = in.get()) != '"')
+        {
+            s.put(char(c));
+        }
+        str = s.str();
+    }
 
-	return in;
+    return in;
 }
 
 template <class T>
 std::istream& operator >> (std::istream& in, std::vector<T>& vec)
 {
-	__eat_whitespace(in);
+    __eat_whitespace(in);
 
-	int c;
-	if (in.good() && (c = in.get()) == '{')
-	{
-		__eat_whitespace(in);
-		vec.clear();
-		while (in.good() && (c = in.get()) != '}')
-		{
-			if (c != ',') in.putback(c);
+    int c;
+    if (in.good() && (c = in.get()) == '{')
+    {
+        __eat_whitespace(in);
+        vec.clear();
+        while (in.good() && (c = in.get()) != '}')
+        {
+            if (c != ',') in.putback(c);
 
-			T t;
-			in >> t;
-			__eat_whitespace(in);
+            T t;
+            in >> t;
+            __eat_whitespace(in);
 
-			vec.push_back(t);
-		}
-	}
+            vec.push_back(t);
+        }
+    }
 
-	return in;
+    return in;
 }
 
 
 template <class T>
 bool __equals(const T& actual, const T& expected)
 {
-	return actual == expected;
+    return actual == expected;
 }
 
 bool __equals(double actual, double expected)
 {
-	if (std::abs(actual - expected) < __EPSILON)
-	{
-		return true;
-	}
-	else
-	{
-		double minimum = std::min(expected * (1.0 - __EPSILON), expected * (1.0 + __EPSILON));
-		double maximum = std::max(expected * (1.0 - __EPSILON), expected * (1.0 + __EPSILON));
-		return actual > minimum && actual < maximum;
-	}
+    if (std::abs(actual - expected) < __EPSILON)
+    {
+        return true;
+    }
+    else
+    {
+        double minimum = std::min(expected * (1.0 - __EPSILON), expected * (1.0 + __EPSILON));
+        double maximum = std::max(expected * (1.0 - __EPSILON), expected * (1.0 + __EPSILON));
+        return actual > minimum && actual < maximum;
+    }
 }
 
 bool __equals(const std::vector<double>& actual, const std::vector<double>& expected)
 {
-	if (actual.size() != expected.size())
-	{
-		return false;
-	}
+    if (actual.size() != expected.size())
+    {
+        return false;
+    }
 
-	for (size_t i = 0; i < actual.size(); ++i)
-	{
-		if (!__equals(actual[i], expected[i]))
-		{
-			return false;
-		}
-	}
+    for (size_t i = 0; i < actual.size(); ++i)
+    {
+        if (!__equals(actual[i], expected[i]))
+        {
+            return false;
+        }
+    }
 
-	return true;
+    return true;
 }
 
+// Coloring, thanks to Joel Sjogren
+namespace Color {
+    enum Code {
+        FG_RED      = 31,
+        FG_GREEN    = 32,
+        FG_BLUE     = 34,
+        FG_CYAN     = 36,
+        FG_DEFAULT  = 39,
+        BG_RED      = 41,
+        BG_GREEN    = 42,
+        BG_BLUE     = 44,
+        BG_DEFAULT  = 49
+    };
+    class Modifier {
+        Code code;
+    public:
+        Modifier(Code pCode) : code(pCode) {}
+        friend std::ostream&
+        operator<<(std::ostream& os, const Modifier& mod) {
+            return os << "\033[" << mod.code << "m";
+        }
+    };
+}
 
 int main(int argc, char* argv[])
 {
-	bool	__abort_on_fail = false;
-	int	__pass = 0;
-	int	__fail = 0;
+    bool    abortOnFail = false;
+    int    passCt = 0;
+    int    failCt = 0;
 
-	if (1 < argc) __abort_on_fail = true;
+    if (1 < argc) abortOnFail = true;
 
-	std::cout << "TAP version 13" << std::endl;
-	std::cout.flush();
+    Color::Modifier def(Color::FG_DEFAULT);
+    Color::Modifier green(Color::FG_GREEN);
+    Color::Modifier red(Color::FG_RED);
+    Color::Modifier cyan(Color::FG_CYAN);
+    std::cout << cyan << "[==========] Running Test Suite" << def << std::endl;
+    std::cout.flush();
 
-	std::ifstream __in("testcases.txt");
-	for(;;)
-	{
-		int __testnum = __pass + __fail + 1;
+    std::ifstream __in("testcases.txt");
+    for(;;) {
+        // Get Test Info
+        int __testnum = passCt + failCt;
+        $RETURNTYPE$ expected;
+        $METHODPARAMDECLARES$
+        __in >> expected >> $METHODPARAMSTREAMIN$;
+        if (!__in.good()) break;
 
-		$RETURNTYPE$	__expected;
-		$METHODPARAMDECLARES$
-		__in >> __expected >> $METHODPARAMSTREAMIN$;
-		if (!__in.good()) break;
+        // Run Test
+        __timer_start();
+        $CLASSNAME$ __object;
+        $RETURNTYPE$ actual = __object.$METHODNAME$($METHODPARAMNAMES$);
+        double __t = __timer_stop();
 
-		std::cout << "# input for test " << __testnum << ": " << $METHODPARAMSTREAMOUT$ << std::endl;
-		std::cout.flush();
+        Color::Modifier testColor = red;
+        bool passed = false;
+        if (__equals(actual, expected)) {
+            passed = true;
+            testColor = green;
+            ++passCt;
+        }
+        else {
+            ++failCt;
+        }
 
-		__timer_start();
+        // Print Results
+        std::cout << testColor << "[----------] " << def << std::endl;
+        std::cout << testColor << "[ RUN " << __testnum << "    ] " << def << "Input  : " << $METHODPARAMSTREAMOUT$ << std::endl;
+        std::cout << testColor << "[          ] " << def << "Expect : " << expected << std::endl;
+        if(passed) {
+            std::cout << testColor << "[  PASSED  ]" << def << std::endl;
+        }
+        else {
+            std::cout << testColor << "[  FAILED  ] " << def << "Actual : " << actual << std::endl;
+        }
+        std::cout << testColor << "[----------] " << def << "<" << __t << "ms>"  << std::endl << std::endl;
+        std::cout.flush();
 
-		$CLASSNAME$ __object;
-		$RETURNTYPE$ __actual = __object.$METHODNAME$($METHODPARAMNAMES$);
+        if (abortOnFail && failCt) std::abort();
+    }
 
-		double __t = __timer_stop();
 
-		std::cout << "# test completed in " << __t << "ms" << std::endl;
-		std::cout.flush();
+    // Results of test suite run
+    std::cout <<  green
+          << "[==========]" << std::endl
+          << "[  PASSED  ] " << def << passCt << std::endl;
+    if(failCt) {
+        std::cout << red << "[  FAILED  ] " << def << failCt << std::endl;
+        std::cout << red << "[==========]" << std::endl;
+    }
+    else {
+        std::cout << green << "[  FAILED  ] " << def << failCt << std::endl;
+        std::cout << green << "[==========]" << std::endl;
+    }
 
-		if (__equals(__actual, __expected))
-		{
-			std::cout << "ok";
-			++__pass;
-		}
-		else
-		{
-			std::cout << "not ok";
-			++__fail;
-		}
 
-		std::cout << " " << __testnum << " - " << __actual << " must equal " << __expected << std::endl;
-		std::cout.flush();
+    if(!failCt) {
+        std::cout << std::endl << cyan
+              << "# Nice! Don't forget to compile remotely before submitting." << std::endl;
+    }
 
-		if (__abort_on_fail && 0 < __fail) std::abort();
-	}
-
-	std::cout << "1.." << (__pass + __fail) << std::endl
-		  << "# passed: " << __pass << std::endl
-		  << "# failed: " << __fail << std::endl;
-
-	if (__fail == 0)
-	{
-		std::cout << std::endl
-			  << "# Nice! Don't forget to compile remotely before submitting." << std::endl;
-	}
-
-	return __fail;
+    return failCt;
 }
 
 // vim:ft=cpp:noet:ts=8
