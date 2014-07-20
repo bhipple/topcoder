@@ -1,4 +1,11 @@
+// ============================================================================
+//                               Configurables
+// ============================================================================
+const bool USE_COLOR = false;
 
+// ============================================================================
+//                                  Driver
+// ============================================================================
 #include "$CLASSNAME$.cc"
 
 #include <algorithm>
@@ -158,7 +165,10 @@ namespace Color {
         Modifier(Code pCode) : code(pCode) {}
         friend std::ostream&
         operator<<(std::ostream& os, const Modifier& mod) {
-            return os << "\033[" << mod.code << "m";
+            if(USE_COLOR)
+                return os << "\033[" << mod.code << "m";
+            else
+                return os;
         }
     };
 }
