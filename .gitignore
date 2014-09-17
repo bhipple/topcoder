@@ -6,3 +6,5 @@ driver*
 
 # Garbage
 nohup.out
+a.out
+.ycm_extra_conf.pyc
