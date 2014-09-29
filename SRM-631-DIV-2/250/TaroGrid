@@ -1,0 +1,75 @@
+// {{{ $VIMCODER$ <-----------------------------------------------------
+// vim:filetype=cpp:foldmethod=marker:foldmarker={{{,}}}
+
+#include <algorithm>
+#include <bitset>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <deque>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <limits>
+#include <list>
+#include <map>
+#include <memory>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <utility>
+#include <vector>
+
+using namespace std;
+
+// }}}
+
+#define ZERO(a) memset(a, 0, sizeof(a))
+#define FOR(x,to) for(x=0;x<to;++x)
+#define ITR(x,c) for(__typeof(c.begin()) x=c.begin();x!=c.end();++x)
+
+class TaroGrid
+{
+public:
+    vector<string> G;
+    int N;
+    int getNumber(vector <string> grid)
+    {
+        N = grid.size();
+        G = grid;
+        int longest = 1;
+        for(int i = 0; i < N; ++i) {
+            for(int j = 0; j < N; ++j) {
+                longest = max(longest, max(seqVert(i, j), seqLat(i, j)));
+            }
+        }
+
+        return longest;
+    }
+
+    int seqVert(int i, int j) {
+        char c = G[i][j];
+        int strk = 1;
+        while(++i < N && G[i][j] == c) {
+            ++strk;
+        }
+        return strk;
+    }
+
+    int seqLat(int i, int j) {
+        char c = G[i][j];
+        int strk = 1;
+        while(++j < N && G[i][j] == c) {
+            ++strk;
+        }
+        return strk;
+    }
+};
+
+
+// Edited by VimCoder 0.3.5
+// http://github.com/chazmcgarvey/vimcoder
