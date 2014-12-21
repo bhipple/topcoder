@@ -1,3 +1,3 @@
 #!/bin/bash
 
-nohup javaws ContestAppletProd.jnlp &
+javaws ContestAppletProd.jnlp &
